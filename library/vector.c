@@ -63,3 +63,38 @@ void deleteVector(vector *v){
     *v = (vector) {malloc(sizeof(int) * v->size), v->size, v->size};
 
 }
+//true если пустой
+bool isEmpty(vector *v){
+    return v->size == 0;
+}
+
+
+//true если полный
+bool isFull(vector *v){
+    return v->size == v->capacity;
+}
+//которая
+//возвращает i-ый элемент вектора v
+int getVectorValue(vector *v, size_t i){
+    return v->data[i];
+}
+//добавляет элемент x в конец вектора v
+void pushBack(vector *v, int x){
+    if(v->size == v->capacity){
+        reserve(v, v->capacity*2);
+    }
+    if(v->capacity == 0){
+        reserve(v, 1);
+    }
+    v->data[v->size] = x;
+    v->size++;
+}
+
+//удаляет последний элемент из вектора
+void popBack(vector *v){
+    if(v->size==0){
+        fprintf(stderr, "vector is empty");
+        exit(1);
+    }
+    v->size--;
+}
