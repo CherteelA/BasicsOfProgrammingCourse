@@ -31,4 +31,11 @@ int getVectorValue(vector *v, size_t i);
 void pushBack(vector *v, int x);
 //удаляет последний элемент из вектора
 void popBack(vector *v);
+//возвращает указатель на
+//index-ый элемент вектора
+int* atVector(vector *v, size_t index);
+//указатель на последний элемент
+int* back(vector *v);
+// указатель на первый элемент
+int* front(vector *v);
 #endif //LABA_VECTOR_H
