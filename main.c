@@ -1,7 +1,9 @@
 // 25.02.2024 20:55
 #include "library/vector.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <assert.h>
+#include "library/vectorVoid.h"
 
 
 void test_atVector_notEmptyVector() {
