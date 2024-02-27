@@ -87,6 +87,7 @@ void test_vec(){
 
 int main() {
     test_vec();
+
     return 0;
 }
 

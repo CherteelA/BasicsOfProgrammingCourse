@@ -25,22 +25,23 @@ void reserve(vector *v, size_t newCapacity){
     int a[v->size];
     for (int i = 0; i < v->size; i ++)
         a[i] = v->data[i];
+    free(v->data);
     *v = (vector) {malloc(sizeof(int) * newCapacity), v->size, newCapacity};
     if(!v->data){
         fprintf(stderr, "bad alloc");
         exit(1);
     }
-    if(newCapacity == 0)
-        v->data = NULL;
-    else if (newCapacity >= v->size) {
-        for (int i = 0; i < v->size; i++)
+    int size = 0;
+    if(newCapacity != 0) {
+        for (int i = 0; i < v->size; i++) {
             v->data[i] = a[i];
+            size++;
+            if (size == newCapacity) {
+                break;
+            }
+        }
     }
-    else {
-        for (int i = 0; i < newCapacity; i++)
-            v->data[i] = a[i];
-    }
-
+    v->size = size;
 }
 //удаляет элементы из контейнера, но не освобождает выделенную память
 void clear(vector *v){
