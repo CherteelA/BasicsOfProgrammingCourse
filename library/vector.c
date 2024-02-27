@@ -42,6 +42,7 @@ void reserve(vector *v, size_t newCapacity){
         }
     }
     v->size = size;
+    v->capacity = newCapacity;
 }
 //удаляет элементы из контейнера, но не освобождает выделенную память
 void clear(vector *v){
@@ -52,16 +53,23 @@ void clear(vector *v){
 //освобождает память, выделенную под
 //неиспользуемые элементы.
 void shrinkToFit(vector *v){
+    int arr[v->size];
+    for(int i = 0; i < v->size; i++){
+        arr[i] = v->data[i];
+    }
+    free(v->data);
+    v->data = malloc(sizeof(int) * v->size);
+    for (int i = 0; i < v->size; i++) {
+        v->data[i] = arr[i];
+    }
     v->capacity = v->size;
 }
 
 //освобождает память, выделенную вектору
 void deleteVector(vector *v){
-    int a[v->size];
-    for (int i = 0; i < v->size; i ++)
-        a[i] = v->data[i];
     free(v->data);
-    *v = (vector) {malloc(sizeof(int) * v->size), v->size, v->size};
+    v->size = 0;
+    v->capacity = 0;
 
 }
 //true если пустой
