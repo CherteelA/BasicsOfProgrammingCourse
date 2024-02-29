@@ -47,6 +47,7 @@ void reserveV(vectorVoid *v, size_t newCapacity) {
 //неиспользуемые элементы.
 void shrinkToFitV(vectorVoid *v){
     *v->data = (int *) realloc(v->data, v->size * v->baseTypeSize);
+    v->capacity = v->size;
 }
 //удаляет элементы из контейнера, но не освобождает выделенную память
 void clearV(vectorVoid *v){
@@ -57,6 +58,7 @@ void deleteVectorV(vectorVoid *v){
     free(v->data);
     v->capacity = 0;
     v->size = 0;
+    v->data = NULL;
 }
 
 //true если пустой
@@ -75,7 +77,8 @@ void getVectorValueV(vectorVoid *v, size_t index, void *destination){
 //записывает на index-ый элемент вектора v значение, расположенное по
 //адресу source
 void setVectorValueV(vectorVoid *v, size_t index, void *source){
-    v->data[index] = source;
+    char *destination = (char *) v->data + index * v->baseTypeSize;
+    memcpy(destination, source, v->baseTypeSize);
 }
 //удаляет последний элемент из вектора
 void popBackV(vectorVoid *v){
@@ -85,21 +88,16 @@ void popBackV(vectorVoid *v){
     }
     v->size--;
 }
-//добавляет элемент x в конец вектора v
-//void pushBackV(vectorVoid *v, void *source){
-//    if(v->size == v->capacity){
-//        reserveV(v, (v->capacity*2) + 1);
-//    }
-//    memcpy(v->data+v->size * v->baseTypeSize, source, v->baseTypeSize);
-//    v->size++;
-//}
+
 void pushBackV(vectorVoid *v, void *source) {
     if (v == NULL || source == NULL) {
         return;
     }
-    if (v->size == v->capacity) {
-        reserveV(v, (v->size*2) + 1);
+    if (v->capacity == 0) {
+        reserveV(v, 1);
+    } else if (v->capacity == v->size) {
+        reserveV(v, v->capacity * 2);
     }
-    memcpy((char*)v->data + v->size * v->baseTypeSize, source, v->baseTypeSize);
+    setVectorValueV(v, v->size, source);
     v->size++;
 }

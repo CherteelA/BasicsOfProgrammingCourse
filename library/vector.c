@@ -40,15 +40,7 @@ void clear(vector *v){
 //освобождает память, выделенную под
 //неиспользуемые элементы.
 void shrinkToFit(vector *v){
-    int arr[v->size];
-    for(int i = 0; i < v->size; i++){
-        arr[i] = v->data[i];
-    }
-    free(v->data);
-    v->data = malloc(sizeof(int) * v->size);
-    for (int i = 0; i < v->size; i++) {
-        v->data[i] = arr[i];
-    }
+    v->data = realloc(v->data, v->size * sizeof(int));
     v->capacity = v->size;
 }
 
