@@ -22,28 +22,15 @@ vector createVector(size_t n){
 
 // изменяет количество памяти
 void reserve(vector *v, size_t newCapacity){
-    int a[v->size];
-    for (int i = 0; i < v->size; i ++)
-        a[i] = v->data[i];
-    free(v->data);
-    *v = (vector) {malloc(sizeof(int) * newCapacity), v->size, newCapacity};
-    if(!v->data){
-        fprintf(stderr, "bad alloc");
-        exit(1);
+    if(newCapacity == 0){
+        free(v->data);
+        v->size = 0;
+        v->capacity = 0;
     }
-    int size = 0;
-    if(newCapacity != 0) {
-        for (int i = 0; i < v->size; i++) {
-            v->data[i] = a[i];
-            size++;
-            if (size == newCapacity) {
-                break;
-            }
-        }
-    }
-    v->size = size;
+    v->data = realloc(v->data, newCapacity);
     v->capacity = newCapacity;
 }
+
 //удаляет элементы из контейнера, но не освобождает выделенную память
 void clear(vector *v){
     v->size = 0;
@@ -89,7 +76,7 @@ int getVectorValue(vector *v, size_t i){
 }
 //добавляет элемент x в конец вектора v
 void pushBack(vector *v, int x){
-    if(v->size == v->capacity){
+    if(v->size == v->capacity && v->size != 0){
         reserve(v, v->capacity*2);
     }
     if(v->capacity == 0){

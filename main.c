@@ -83,11 +83,7 @@ void test_vec(){
     test_atVector_notEmptyVector();
 }
 
-
-
 int main() {
     test_vec();
-
     return 0;
 }
-
