@@ -14,13 +14,12 @@ vectorVoid createVectorV(size_t n, size_t baseTypeSize){
         return vecV;
     }
 
-    vecV.data = (int *) malloc(n * sizeof(int));
+    vecV.data = malloc(n * sizeof(int));
 
     if(vecV.data == NULL){
         fprintf(stderr, "bad alloc");
         exit(1);
     }
-
     vecV.size = 0;
     vecV.capacity = n;
     vecV.baseTypeSize = baseTypeSize;
@@ -30,7 +29,7 @@ vectorVoid createVectorV(size_t n, size_t baseTypeSize){
 // изменяет количество памяти
 void reserveV(vectorVoid *v, size_t newCapacity) {
     if (newCapacity > v->capacity) {
-        int *newData = (int *) realloc(v->data, newCapacity * v->baseTypeSize);
+        void *newData = realloc(v->data, newCapacity * v->baseTypeSize);
         if (newData == NULL) {
             fprintf(stderr, "Failed to reallocate memory for the vector\n");
             exit(1);
@@ -43,10 +42,11 @@ void reserveV(vectorVoid *v, size_t newCapacity) {
         v->size = newCapacity;
     }
 }
+
 //освобождает память, выделенную под
 //неиспользуемые элементы.
 void shrinkToFitV(vectorVoid *v){
-    *v->data = (int *) realloc(v->data, v->size * v->baseTypeSize);
+    *v->data = realloc(v->data, v->size * v->baseTypeSize);
     v->capacity = v->size;
 }
 //удаляет элементы из контейнера, но не освобождает выделенную память
